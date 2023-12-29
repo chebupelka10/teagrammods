@@ -37,7 +37,7 @@ class ChepuxGPTMod(loader.Module):
         """Используйте .gpt <вопрос> или ответьте на сообщение"""
         
         if self.config["OPENAI_API_KEY"] is None:
-            await utils.answer(message, "<b><emoji document_id=5325960528818872589>💢</emoji> Вы не указали API ключ для OpenAI в конфиге модуля.</b>")
+            await utils.answer(message, "<b>❗️ Вы не указали API ключ для OpenAI в конфиге модуля.</b>")
             return
         api_key = self.config["OPENAI_API_KEY"]
         question = utils.get_args_raw(message)
@@ -46,12 +46,12 @@ class ChepuxGPTMod(loader.Module):
             if reply:
                 question = reply.raw_text
             else:
-                await utils.answer(message, "<b><emoji document_id=5325652987685642265>🔍</emoji> Вы не задали вопрос.</b>")
+                await utils.answer(message, "❗️ <b>Вы не задали вопрос.</b>")
                 return
 
         prompt = [{"role": "user", "content": question}]
 
-        await message.edit("<b><emoji document_id=5325880328894554534>🦊</emoji> Генерирую ответ...</b>")
+        await message.edit("🧐 <b>Генерирую ответ...</b>")
         try:
             client = openai.AsyncOpenAI(api_key=api_key)
             response = await client.chat.completions.create(
@@ -59,6 +59,6 @@ class ChepuxGPTMod(loader.Module):
                 messages=prompt
             )
             answer = response.choices[0].message.content
-            await utils.answer(message, f"<b><emoji document_id=5328085932040003949>🔫</emoji> Вопрос:</b> {question}\n<b><emoji document_id=5325583039848260951>🤓</emoji> Ответ:</b> {answer}")
+            await utils.answer(message, f"❓ <b>Вопрос:</b> {question}\n<b><emoji document_id=5325583039848260951>🤓</emoji> Ответ:</b> {answer}")
         except Exception as e:
-            await utils.answer(message, f"<b><emoji document_id=5325960528818872589>💢</emoji> Произошла ошибка:</b> {e}")
+            await utils.answer(message, f"❗️ <b>Произошла ошибка:</b> {e}")
