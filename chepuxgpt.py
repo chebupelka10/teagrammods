@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # meta developer: @chepuxmodules
 
-# from .Hikka.hikka import loader, utils
 from telethon import types
 from .. import __version__, loader, utils, validators
 from ..types import Config, ConfigValue
@@ -31,7 +30,6 @@ class ChepuxGPTMod(loader.Module):
                 doc="Название модели для генерации ответов"
             )
         )
-            
 
     async def gptcmd(self, message):
         """Используйте .gpt <вопрос> или ответьте на сообщение"""
@@ -39,8 +37,10 @@ class ChepuxGPTMod(loader.Module):
         if self.config["OPENAI_API_KEY"] is None:
             await utils.answer(message, "<b><emoji document_id=5325960528818872589>💢</emoji> Вы не указали API ключ для OpenAI в конфиге модуля.</b>")
             return
+        
         api_key = self.config["OPENAI_API_KEY"]
         question = utils.get_args_raw(message)
+        
         if not question:
             reply = await message.get_reply_message()
             if reply:
@@ -52,6 +52,7 @@ class ChepuxGPTMod(loader.Module):
         prompt = [{"role": "user", "content": question}]
 
         await message.edit("<b><emoji document_id=5325880328894554534>🦊</emoji> Генерирую ответ...</b>")
+        
         try:
             client = openai.AsyncOpenAI(api_key=api_key)
             response = await client.chat.completions.create(
@@ -60,5 +61,17 @@ class ChepuxGPTMod(loader.Module):
             )
             answer = response.choices[0].message.content
             await utils.answer(message, f"<b><emoji document_id=5328085932040003949>🔫</emoji> Вопрос:</b> {question}\n<b><emoji document_id=5325583039848260951>🤓</emoji> Ответ:</b> {answer}")
-        except Exception as e:
-            await utils.answer(message, f"<b><emoji document_id=5325960528818872589>💢</emoji> Произошла ошибка:</b> {e}")
+        except openai.error.Timeout as e:
+            await utils.answer(message, f"<b>❗️ TimeOut! истекло время ожидания ответа. {e}</b>")
+        except openai.error.APIError as e:
+            await utils.answer(message, f"<b>❗️ APIError! произошла ошибка на стороне API! {e}</b>")
+        except openai.error.APIConnectionError as e:
+            await utils.answer(message, f"<b>❗️ APIConnectionError! Не удалось подключиться к API! {e}</b>")
+        except openai.error.InvalidRequestError as e:
+            await utils.answer(message, f"<b>❗️ InvalidRequestError! Неправильный запрос! {e}</b>")
+        except openai.error.AuthenticationError as e:
+            await utils.answer(message, f"<b>❗️ AuthenticationError! Нерабочий токен! {e}</b>")
+        except openai.error.PermissionError as e:
+            await utils.answer(message, f"<b>❗️ PermissionError! У вас нету доступа к данному запросу! {e}</b>")
+        except openai.error.RateLimitError as e:
+            await utils.answer(message, f"<b>❗️ RateLimitError! Слишком много обращений к API! {e}</b>")
