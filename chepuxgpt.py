@@ -36,7 +36,7 @@ class ChepuxGPTMod(loader.Module):
     async def gptcmd(self, message):
         """Используйте .gpt <вопрос> или ответьте на сообщение"""
         
-        if self.config["OPENAI_API_KEY"] is None:
+        if self.config["OPENAI_API_KEY"] is none:
             await utils.answer(message, "<b><emoji document_id=5325960528818872589>💢</emoji> Вы не указали API ключ для OpenAI в конфиге модуля.</b>")
             return
         api_key = self.config["OPENAI_API_KEY"]
