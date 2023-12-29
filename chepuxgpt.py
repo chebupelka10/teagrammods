@@ -16,6 +16,7 @@ class ChepuxGPTMod(loader.Module):
         self.config = loader.ModuleConfig(
             ConfigOption("OPENAI_API_KEY", None, "Ваш API ключ для OpenAI"),
             ConfigOption("MODEL", "gpt-3.5-turbo", "Название модели для генерации ответов")
+        )
 
     async def gptcmd(self, message):
         """Используйте .gpt <вопрос> или ответьте на сообщение"""
@@ -46,3 +47,4 @@ class ChepuxGPTMod(loader.Module):
             await utils.answer(message, f"<b><emoji document_id=5328085932040003949>🔫</emoji> Вопрос:</b> {question}\n<b><emoji document_id=5325583039848260951>🤓</emoji> Ответ:</b> {answer}")
         except Exception as e:
             await utils.answer(message, f"<b><emoji document_id=5325960528818872589>💢</emoji> Произошла ошибка:</b> {e}")
+
