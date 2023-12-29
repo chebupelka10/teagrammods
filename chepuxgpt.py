@@ -2,7 +2,7 @@
 # meta developer: @chepuxmodules
 
 # from .Hikka.hikka import loader, utils
-from .. import loader, utils
+from .. import loader, utils, ConfigOption
 import openai
 import requests
 
@@ -14,9 +14,8 @@ class ChepuxGPTMod(loader.Module):
 
     def __init__(self):
         self.config = loader.ModuleConfig(
-            "OPENAI_API_KEY", None, "Ваш API ключ для OpenAI", str,
-            "MODEL", "gpt-3.5-turbo", "Название модели для генерации ответов", str
-        )
+            ConfigOption("OPENAI_API_KEY", None, "Ваш API ключ для OpenAI"),
+            ConfigOption("MODEL", "gpt-3.5-turbo", "Название модели для генерации ответов")
 
     async def gptcmd(self, message):
         """Используйте .gpt <вопрос> или ответьте на сообщение"""
