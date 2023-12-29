@@ -18,8 +18,8 @@ class ChepuxGPTMod(loader.Module):
         self.config = Config(
             ConfigValue(
                 option="OPENAI_API_KEY",
-                default=" ",
-                value=self.db.get("chepuxgpt", "OPENAI_API_KEY", " "),
+                default="none",
+                value=self.db.get("chepuxgpt", "OPENAI_API_KEY", "none"),
                 validator=validators.String(),
                 doc="Ваш API ключ для OpenAI"
             ),
