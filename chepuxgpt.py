@@ -2,8 +2,9 @@
 # meta developer: @chepuxmodules
 
 # from .Hikka.hikka import loader, utils
-from teagram.types import Config
-from .. import loader, utils
+from telethon import types
+from .. import __version__, loader, utils, validators
+from ..types import Config, ConfigValue
 import openai
 import requests
 
@@ -14,11 +15,23 @@ class ChepuxGPTMod(loader.Module):
     strings = {"name": "ChepuxGPT"}
 
     def __init__(self):
-        self.config = loader.ModuleConfig(
-            Config("OPENAI_API_KEY", None, "Ваш API ключ для OpenAI"),
-            Config("MODEL", "gpt-3.5-turbo", "Название модели для генерации ответов")
+        self.config = Config(
+            ConfigValue(
+                option="OPENAI_API_KEY",
+                default=" ",
+                value=self.db.get("chepuxgpt", "OPENAI_API_KEY", " "),
+                validator=validators.String(),
+                doc="Ваш API ключ для OpenAI"
+            ),
+            ConfigValue(
+                option="MODEL",
+                default="gpt-3.5-turbo",
+                value=self.db.get("chepuxgpt", "MODEL", "gpt-3.5-turbo"),
+                validator=validators.String(),
+                doc="Название модели для генерации ответов"
+            )
         )
-
+            
 
     async def gptcmd(self, message):
         """Используйте .gpt <вопрос> или ответьте на сообщение"""
