@@ -2,6 +2,7 @@
 # meta developer: @chepuxmodules
 
 # from .Hikka.hikka import loader, utils
+from teagram.types import Config
 from .. import loader, utils
 import openai
 import requests
