@@ -2,9 +2,10 @@
 # meta developer: @chepuxmodules
 
 # from .Hikka.hikka import loader, utils
-from .. import loader, utils, ConfigOption
+from .. import loader, utils
 import openai
 import requests
+from ..types import ConfigOption
 
 
 @loader.tds
